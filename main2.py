@@ -49,21 +49,18 @@ def process_file(file):
         progress = st.progress(0)
 
         for index, image in enumerate(images):
-            # Converte a imagem para Base64 (string)
+            # Salva a imagem como bytes
             buffered = BytesIO()
             image.save(buffered, format="JPEG")
             buffered.seek(0)
-            image_base64 = base64.b64encode(buffered.read()).decode("utf-8")
+            image_bytes = buffered.read()
 
-            # Envia o conteúdo para a API (ajuste caso necessário)
+            # Envia o conteúdo para a API
             try:
                 response = client.models.generate_content(
                     model=MODEL_ID,
                     contents=[
-                        {
-                            "type": "image/jpeg",  # Define explicitamente o tipo da imagem
-                            "data": image_base64  # Dados da imagem em Base64
-                        },
+                        base64.b64encode(image_bytes).decode("utf-8"),
                         (
                             "Transcreva na íntegra todo conteúdo da imagem fornecida, incluindo cabeçalhos, "
                             "rodapés, subtextos, imagens (com texto alternativo), tabelas e outros elementos."
