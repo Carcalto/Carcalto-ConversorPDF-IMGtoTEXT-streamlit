@@ -49,25 +49,32 @@ def process_file(file):
         progress = st.progress(0)
 
         for index, image in enumerate(images):
-            # Converte a imagem para base64
+            # Converte a imagem para Base64 (string)
             buffered = BytesIO()
             image.save(buffered, format="JPEG")
             buffered.seek(0)
             image_base64 = base64.b64encode(buffered.read()).decode("utf-8")
 
-            # Envia a imagem para a API
-            response = client.models.generate_content(
-                model=MODEL_ID,
-                contents=[
-                    image_base64,
-                    (
-                        "Transcreva na íntegra todo conteúdo da imagem fornecida, incluindo cabeçalhos, "
-                        "rodapés, subtextos, imagens (com texto alternativo), tabelas e outros elementos."
-                        "Requisitos: Retorne o conteúdo completo, sem explicações ou comentários adicionais."
-                    ),
-                ],
-            )
-            transcription += response.text + "\n"
+            # Envia o conteúdo para a API (ajuste caso necessário)
+            try:
+                response = client.models.generate_content(
+                    model=MODEL_ID,
+                    contents=[
+                        {
+                            "type": "image/jpeg",  # Define explicitamente o tipo da imagem
+                            "data": image_base64  # Dados da imagem em Base64
+                        },
+                        (
+                            "Transcreva na íntegra todo conteúdo da imagem fornecida, incluindo cabeçalhos, "
+                            "rodapés, subtextos, imagens (com texto alternativo), tabelas e outros elementos."
+                            "Requisitos: Retorne o conteúdo completo, sem explicações ou comentários adicionais."
+                        ),
+                    ],
+                )
+                transcription += response.text + "\n"
+            except Exception as api_error:
+                st.error(f"Erro ao processar a imagem {index + 1}: {api_error}")
+                return None
 
             # Atualiza o progresso
             progress.progress((index + 1) / len(images))
