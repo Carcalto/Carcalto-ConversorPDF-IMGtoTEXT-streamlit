@@ -1,0 +1,1 @@
+# Carcalto-ConversorPDF-IMGtoTEXT-streamlit
