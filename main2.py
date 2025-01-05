@@ -90,8 +90,8 @@ if st.session_state.transcription:
     st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        st.download_button("Baixar Transcrição", st.session_state.transcription, file_name="transcricao.txt")
+        st.download_button("BAIXAR TRANSCRIÇÃO", st.session_state.transcription, file_name="transcricao.txt")
     with col2:
-        if st.button("Nova Transcrição"):
+        if st.button("CLIQUE 2 VEZES PARA NOVA CONVERSÃO"):
             st.session_state.reset_transcription = True
     st.markdown("</div>", unsafe_allow_html=True)
