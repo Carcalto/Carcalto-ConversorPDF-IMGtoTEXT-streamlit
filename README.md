@@ -197,5 +197,3 @@ Se tiver dúvidas ou sugestões, entre em contato:
 
 ---
 
-✨ **Divirta-se utilizando o aplicativo!** 🚀
-
